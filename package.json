@@ -1,0 +1,35 @@
+{
+  "name": "@lensapp-eu/lens",
+  "version": "1.1.0",
+  "description": "Lens JS client - send debug payloads to the Lens desktop app and Lens Cloud",
+  "main": "lens.js",
+  "types": "lens.d.ts",
+  "license": "MIT",
+  "author": "LensApp <hello@lensapp.eu>",
+  "homepage": "https://lensapp.eu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lensapp-eu/lens-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lensapp-eu/lens-js/issues"
+  },
+  "keywords": [
+    "debug",
+    "debugging",
+    "dump",
+    "lens",
+    "developer-tools",
+    "logging"
+  ],
+  "files": [
+    "lens.js",
+    "lens.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "sideEffects": false
+}

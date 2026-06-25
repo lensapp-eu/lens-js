@@ -16,6 +16,10 @@ lens({ order, total });
 
 ```bash
 npm install @lensapp-eu/lens
+# or
+yarn add @lensapp-eu/lens
+# or
+pnpm add @lensapp-eu/lens
 ```
 
 ## Usage

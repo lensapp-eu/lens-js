@@ -1,17 +1,29 @@
 (function (root) {
   'use strict';
 
-  const CONFIG = { host: '127.0.0.1', port: 23600, cloudUrl: null, key: null };
+  const DEFAULT_CLOUD_URL = 'https://app.lensapp.eu';
+  const CONFIG = { host: '127.0.0.1', port: 23600, cloudUrl: null, key: null, local: null, cloud: null };
 
   function envVar(name) {
     return typeof process !== 'undefined' && process.env ? process.env[name] : undefined;
+  }
+  function envBool(name, def) {
+    const v = envVar(name);
+    if (v === undefined || v === null || v === '') return def;
+    return !['false', '0', 'no', 'off'].includes(String(v).toLowerCase());
   }
   function resolveKey() {
     return CONFIG.key || envVar('LENS_PROJECT_KEY') || null;
   }
   function resolveCloudUrl() {
-    const u = CONFIG.cloudUrl || envVar('LENS_CLOUD_URL') || null;
-    return u ? u.replace(/\/$/, '') : null;
+    const u = CONFIG.cloudUrl || envVar('LENS_CLOUD_URL') || DEFAULT_CLOUD_URL;
+    return u.replace(/\/$/, '');
+  }
+  function localEnabled() {
+    return CONFIG.local != null ? CONFIG.local : envBool('LENS_LOCAL', true);
+  }
+  function cloudEnabled() {
+    return CONFIG.cloud != null ? CONFIG.cloud : envBool('LENS_CLOUD', true);
   }
 
   function post(url, headers, body) {
@@ -129,7 +141,7 @@
 
   function transmit(payload) {
     payload.time = payload.time || Date.now();
-    payload.meta = { client: 'js', version: '1.1.0' };
+    payload.meta = { client: 'js', version: '1.2.0' };
 
     // Cloud ingest key (env LENS_PROJECT_KEY or lens.setKey); links events to a project.
     const key = resolveKey();
@@ -143,13 +155,14 @@
 
     const body = JSON.stringify(payload);
 
-    // Local Lens desktop app.
-    post(`http://${CONFIG.host}:${CONFIG.port}`, { 'Content-Type': 'application/json' }, body);
+    // Channel 1: local Lens desktop app (env LENS_LOCAL, default on).
+    if (localEnabled()) {
+      post(`http://${CONFIG.host}:${CONFIG.port}`, { 'Content-Type': 'application/json' }, body);
+    }
 
-    // Lens Cloud, straight from the client, no desktop required.
-    const cloudUrl = resolveCloudUrl();
-    if (cloudUrl && key && t !== 'clear' && t !== 'pause') {
-      post(cloudUrl + '/api/ingest', { 'Content-Type': 'application/json', 'x-lens-key': key }, body);
+    // Channel 2: Lens Cloud (env LENS_CLOUD, default on; needs a project key).
+    if (cloudEnabled() && key && t !== 'clear' && t !== 'pause') {
+      post(resolveCloudUrl() + '/api/ingest', { 'Content-Type': 'application/json', 'x-lens-key': key }, body);
     }
   }
 
@@ -213,6 +226,13 @@
   };
   lens.setKey = (key) => {
     CONFIG.key = key || null;
+  };
+  // Toggle the two channels independently (null = fall back to env / default on).
+  lens.setLocal = (on) => {
+    CONFIG.local = on == null ? null : !!on;
+  };
+  lens.setCloud = (on) => {
+    CONFIG.cloud = on == null ? null : !!on;
   };
 
   if (typeof module !== 'undefined' && module.exports) {

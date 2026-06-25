@@ -42,23 +42,33 @@ Available color shortcuts: `.red()`, `.green()`, `.blue()`, `.orange()`, `.purpl
 
 ## Lens Cloud (optional)
 
-To send events straight to [Lens Cloud](https://app.lensapp.eu), no desktop app required, set
-both in your environment:
+To send events straight to [Lens Cloud](https://app.lensapp.eu), no desktop app required, set one
+environment variable:
 
 ```bash
 LENS_PROJECT_KEY=your-project-key-from-lens-cloud
-LENS_CLOUD_URL=https://app.lensapp.eu
 ```
 
-The project key links events to the right project; the cloud URL is where they are sent. With both
-set, every event goes to Lens Cloud (and to the desktop app too, if it is running).
+With a key set, events go to Lens Cloud at `https://app.lensapp.eu` by default. Set `LENS_CLOUD_URL`
+only to point at a self-hosted or local cloud (e.g. `http://localhost:3000`).
 
 In the browser, where environment variables are not available, configure it in code:
 
 ```js
 lens.setKey('your-project-key');
-lens.setCloudUrl('https://app.lensapp.eu');
+lens.setCloudUrl('https://app.lensapp.eu'); // optional override
 ```
+
+## Channels
+
+Lens sends to two channels, independently toggleable (default on):
+
+```bash
+LENS_LOCAL=false   # disable the desktop app -> cloud only
+LENS_CLOUD=false   # disable the cloud -> desktop app only
+```
+
+Or in code: `lens.setLocal(false)` / `lens.setCloud(false)`.
 
 ## Configuration
 

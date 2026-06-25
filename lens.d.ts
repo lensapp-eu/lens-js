@@ -24,6 +24,10 @@ declare namespace lens {
   function setCloudUrl(url: string | null): void;
   /** Set the Lens Cloud project key. */
   function setKey(key: string | null): void;
+  /** Toggle sending to the local desktop app (null = env/default on). */
+  function setLocal(on: boolean | null): void;
+  /** Toggle sending to Lens Cloud (null = env/default on). */
+  function setCloud(on: boolean | null): void;
 }
 
 export = lens;

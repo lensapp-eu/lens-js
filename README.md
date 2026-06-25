@@ -5,7 +5,7 @@ Send debug payloads from your JavaScript or Node.js app to the **Lens desktop ap
 rendered data to a separate window, with labels, colors and the line it came from.
 
 ```js
-const lens = require('@lensapp-eu/lens');
+const lens = require('@lensapp-eu/lens-js');
 
 lens('hello');
 lens(user).green().label('Signed-in user');
@@ -15,11 +15,11 @@ lens({ order, total });
 ## Install
 
 ```bash
-npm install @lensapp-eu/lens
+npm install @lensapp-eu/lens-js
 # or
-yarn add @lensapp-eu/lens
+yarn add @lensapp-eu/lens-js
 # or
-pnpm add @lensapp-eu/lens
+pnpm add @lensapp-eu/lens-js
 ```
 
 ## Usage

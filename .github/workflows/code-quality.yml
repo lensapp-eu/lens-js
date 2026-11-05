@@ -1,0 +1,21 @@
+name: Code Quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions: {}
+
+concurrency:
+  group: code-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    uses: ultimatelemon/shared-actions/.github/workflows/node-quality.yml@v1
+    permissions:
+      contents: read
+    with:
+      node-version: '26'

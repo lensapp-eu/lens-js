@@ -41,7 +41,7 @@
         req.on('error', () => {});
         req.end(body);
       }
-    } catch (_) {
+    } catch {
       // Debugging must never break the app.
     }
   }
@@ -69,7 +69,7 @@
   function pkgVersion(name) {
     try {
       return require(name + '/package.json').version || null;
-    } catch (_) {
+    } catch {
       return null;
     }
   }
@@ -107,7 +107,7 @@
         }
         return 'Plain Node';
       }
-    } catch (_) {
+    } catch {
       // best-effort
     }
     return null;
@@ -133,7 +133,7 @@
         if (fw) ctx.framework = fw;
         return ctx;
       }
-    } catch (_) {
+    } catch {
       // Context is best-effort; never break the app.
     }
     return {};

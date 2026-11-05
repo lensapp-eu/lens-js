@@ -4,6 +4,12 @@
   "description": "Lens JS client - send debug payloads to the Lens desktop app and Lens Cloud",
   "main": "lens.js",
   "types": "lens.d.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit --strict lens.d.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "license": "MIT",
   "author": "LensApp <hello@lensapp.eu>",
   "homepage": "https://lensapp.eu",
@@ -34,5 +40,15 @@
   "publishConfig": {
     "access": "public"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "@ultimatelemon-eu/eslint-config": "^1.1.1",
+    "@ultimatelemon-eu/prettier-config": "^1.0.2",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
+  }
 }

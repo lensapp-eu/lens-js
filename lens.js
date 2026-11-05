@@ -2,10 +2,19 @@
   'use strict';
 
   const DEFAULT_CLOUD_URL = 'https://app.lensapp.eu';
-  const CONFIG = { host: '127.0.0.1', port: 23600, cloudUrl: null, key: null, local: null, cloud: null };
+  const CONFIG = {
+    host: '127.0.0.1',
+    port: 23600,
+    cloudUrl: null,
+    key: null,
+    local: null,
+    cloud: null
+  };
 
   function envVar(name) {
-    return typeof process !== 'undefined' && process.env ? process.env[name] : undefined;
+    return typeof process !== 'undefined' && process.env
+      ? process.env[name]
+      : undefined;
   }
   function envBool(name, def) {
     const v = envVar(name);
@@ -33,10 +42,11 @@
           method: 'POST',
           headers,
           body,
-          keepalive: typeof window !== 'undefined',
+          keepalive: typeof window !== 'undefined'
         }).catch(() => {});
       } else {
-        const lib = url.indexOf('https:') === 0 ? require('https') : require('http');
+        const lib =
+          url.indexOf('https:') === 0 ? require('https') : require('http');
         const req = lib.request(url, { method: 'POST', headers });
         req.on('error', () => {});
         req.end(body);
@@ -82,12 +92,20 @@
         if (window.__NUXT__) return 'Nuxt';
         if (window.Vue || window.__VUE__) return 'Vue';
         if (window.ng || window.getAllAngularRootElements) return 'Angular';
-        if (window.React || (typeof document !== 'undefined' && document.querySelector('#__next, [data-reactroot]'))) {
+        if (
+          window.React ||
+          (typeof document !== 'undefined' &&
+            document.querySelector('#__next, [data-reactroot]'))
+        ) {
           return 'React';
         }
         return 'Browser';
       }
-      if (typeof process !== 'undefined' && process.versions && process.versions.node) {
+      if (
+        typeof process !== 'undefined' &&
+        process.versions &&
+        process.versions.node
+      ) {
         if (envVar('NEXT_RUNTIME')) {
           const v = pkgVersion('next');
           return v ? 'Next.js ' + v : 'Next.js';
@@ -99,7 +117,7 @@
           ['express', 'Express'],
           ['koa', 'Koa'],
           ['fastify', 'Fastify'],
-          ['@hapi/hapi', 'hapi'],
+          ['@hapi/hapi', 'hapi']
         ];
         for (const pair of checks) {
           const v = pkgVersion(pair[0]);
@@ -115,12 +133,16 @@
 
   function systemContext() {
     try {
-      if (typeof process !== 'undefined' && process.versions && process.versions.node) {
+      if (
+        typeof process !== 'undefined' &&
+        process.versions &&
+        process.versions.node
+      ) {
         const os = require('os');
         const ctx = {
           runtime: 'Node ' + process.version.replace(/^v/, ''),
           os: os.type() + ' ' + os.release(),
-          hostname: os.hostname(),
+          hostname: os.hostname()
         };
         const fw = detectFramework();
         if (fw) ctx.framework = fw;
@@ -157,12 +179,20 @@
 
     // Channel 1: local Lens desktop app (env LENS_LOCAL, default on).
     if (localEnabled()) {
-      post(`http://${CONFIG.host}:${CONFIG.port}`, { 'Content-Type': 'application/json' }, body);
+      post(
+        `http://${CONFIG.host}:${CONFIG.port}`,
+        { 'Content-Type': 'application/json' },
+        body
+      );
     }
 
     // Channel 2: Lens Cloud (env LENS_CLOUD, default on; needs a project key).
     if (cloudEnabled() && key && t !== 'clear' && t !== 'pause') {
-      post(resolveCloudUrl() + '/api/ingest', { 'Content-Type': 'application/json', 'x-lens-key': key }, body);
+      post(
+        resolveCloudUrl() + '/api/ingest',
+        { 'Content-Type': 'application/json', 'x-lens-key': key },
+        body
+      );
     }
   }
 
@@ -186,12 +216,24 @@
       return this._send();
     }
 
-    red() { return this.color('red'); }
-    green() { return this.color('green'); }
-    blue() { return this.color('blue'); }
-    orange() { return this.color('orange'); }
-    purple() { return this.color('purple'); }
-    gray() { return this.color('gray'); }
+    red() {
+      return this.color('red');
+    }
+    green() {
+      return this.color('green');
+    }
+    blue() {
+      return this.color('blue');
+    }
+    orange() {
+      return this.color('orange');
+    }
+    purple() {
+      return this.color('purple');
+    }
+    gray() {
+      return this.color('gray');
+    }
 
     values(...values) {
       this.values = values;
@@ -205,7 +247,7 @@
         label: this._label,
         color: this._color,
         origin: this.origin,
-        values: this.values,
+        values: this.values
       });
       return this;
     }
